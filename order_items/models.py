@@ -5,6 +5,7 @@ from products.models import Product
 
 
 class OrderItem(models.Model):
+    id = models.AutoField(primary_key=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -13,6 +14,4 @@ class OrderItem(models.Model):
 
     class Meta:
         db_table = 'order_items'
-        constraints = [
-            models.UniqueConstraint(fields=['order', 'product'], name='unique_order_product')
-        ]
+        unique_together = ('order', 'product')
