@@ -1,3 +1,10 @@
 from django.db import models
 
-# Create your models here.
+
+class Supplier(models.Model):
+    number = models.CharField(max_length=50, null=False)
+    complement = models.CharField(max_length=100, blank=True, null=True)
+    zip_code = models.CharField(max_length=8, null=False)
+
+    class Meta:
+        db_table = 'suppliers'
