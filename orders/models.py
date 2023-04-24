@@ -4,6 +4,9 @@ from django.db import models
 from django.utils import timezone
 from enum import Enum, unique
 
+from addresses.models import Address
+from suppliers.models import Supplier
+
 
 @unique
 class StateDelivery(Enum):
@@ -36,6 +39,8 @@ class StateDelivery(Enum):
 class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     state_delivery = models.IntegerField(default=1)
+    address_of_delivery = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, related_name='orders')
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, related_name='orders')
 
     class Meta:
         db_table = 'orders'
