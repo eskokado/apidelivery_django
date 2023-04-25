@@ -1,10 +1,9 @@
-import ipdb
-from django.shortcuts import render
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import CreateDeliveryRequest, CreateDeliveryResponse, DeliveryResponseSerializer
+from rest_framework import status, generics
+
+from .models import Order, StateDelivery
+from .serializers import CreateDeliveryRequest, CreateDeliveryResponse, DeliveryResponseSerializer, OrderSerializer
 from .delivery_service import DeliveryService
 
 
@@ -16,3 +15,13 @@ class DeliveryView(APIView):
             return Response(delivery_response_data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrderDelivered(generics.UpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        instance.state_delivery = StateDelivery.DELIVERED.code
+        serializer.save(state_delivery=instance.state_delivery)
