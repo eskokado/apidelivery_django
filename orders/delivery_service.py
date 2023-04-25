@@ -2,10 +2,11 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from addresses.models import Address
 from addresses.serializers import AddressSerializer
+from addresses.zip_code_service import ZipCodeService
 from clients.models import Client
 from order_items.models import OrderItem
 from orders.models import Order
-from orders.serializers import OrderSerializer, OrderResponseSerializer, OrderItemResponseSerializer
+from orders.serializers import OrderResponseSerializer, OrderItemResponseSerializer
 from products.models import Product
 from products.serializers import ProductSerializer
 from suppliers.models import Supplier
@@ -17,6 +18,9 @@ def create_delivery_response(order, order_item):
     order_item_data = OrderItemResponseSerializer(order_item).data
 
     order_data["address_of_delivery"] = AddressSerializer(order.address_of_delivery).data
+    zip_code_service = ZipCodeService(base_url='https://viacep.com.br/ws')
+    address_info = zip_code_service.get_zip_code_address(order_data["address_of_delivery"]["zip_code"])
+    order_data["address_info"] = address_info
     order_data["supplier"] = SupplierSerializer(order.supplier).data
     order_item_data["product"] = ProductSerializer(order_item.product).data
 
@@ -61,6 +65,10 @@ class DeliveryService:
             serialized_order = OrderResponseSerializer(order).data
             serialized_order['address_of_delivery'] = AddressSerializer(address).data
             serialized_order['supplier'] = SupplierSerializer(supplier).data
+
+            zip_code_service = ZipCodeService(base_url='https://viacep.com.br/ws')
+            address_info = zip_code_service.get_zip_code_address(serialized_order["address_of_delivery"]["zip_code"])
+            serialized_order["address_of_delivery"]["address_info"] = address_info
 
             serialized_order_item = OrderItemResponseSerializer(order_item).data
             serialized_order_item['product'] = ProductSerializer(product).data
