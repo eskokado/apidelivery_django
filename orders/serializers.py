@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from addresses.serializers import AddressSerializer
+from addresses.serializers import AddressSerializer, AddressInfoSerializer
 from order_items.models import OrderItem
 from order_items.serializers import OrderItemSerializer
 from products.serializers import ProductSerializer
@@ -45,7 +45,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id', 'order_date', 'state_delivery', 'address_of_delivery', 'supplier', 'order_items')
+        fields = ('id', 'order_date', 'state_delivery', 'address_of_delivery', 'address_info', 'supplier', 'order_items')
 
 
 class CreateDeliveryResponse(serializers.Serializer):
