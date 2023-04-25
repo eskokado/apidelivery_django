@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 
 from .models import Order, StateDelivery
-from .serializers import CreateDeliveryRequest, CreateDeliveryResponse, DeliveryResponseSerializer, OrderSerializer
+from .serializers import CreateDeliveryRequest, OrderSerializer
 from .delivery_service import DeliveryService
 
 
@@ -24,4 +24,14 @@ class OrderDelivered(generics.UpdateAPIView):
     def perform_update(self, serializer):
         instance = self.get_object()
         instance.state_delivery = StateDelivery.DELIVERED.code
+        serializer.save(state_delivery=instance.state_delivery)
+
+
+class OrderCancel(generics.UpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        instance.state_delivery = StateDelivery.CANCELED.code
         serializer.save(state_delivery=instance.state_delivery)
