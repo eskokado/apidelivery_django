@@ -30,8 +30,8 @@ class Command(BaseCommand):
             cli2.save()
             sup.save()
 
-            add1 = Address(number="300", complement="Apto 203", zip_code="38220834", client=cli1)
-            add2 = Address(number="600", complement="Apto 603", zip_code="38220834", client=cli2)
+            add1 = Address(number="300", complement="Apto 203", zip_code="05577200", client=cli1)
+            add2 = Address(number="600", complement="Apto 603", zip_code="05577200", client=cli2)
 
             add1.save()
             add2.save()
