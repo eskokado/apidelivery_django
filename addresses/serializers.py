@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from addresses.models import Address
+from clients.serializers import ClientSerializer
 
 
 class AddressInfoSerializer(serializers.Serializer):
@@ -18,8 +19,8 @@ class AddressInfoSerializer(serializers.Serializer):
 
 class AddressSerializer(serializers.ModelSerializer):
     address_info = AddressInfoSerializer(read_only=True)
+    client = ClientSerializer(read_only=True)
+
     class Meta:
         model = Address
         fields = '__all__'
-
-
