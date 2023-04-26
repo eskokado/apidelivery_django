@@ -3,12 +3,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 
+from accounts.permissions import IsAdminUser, IsAuthenticated
 from .models import Order, StateDelivery
 from .serializers import CreateDeliveryRequest, OrderSerializer
 from .delivery_service import DeliveryService
 
 
 class DeliveryView(APIView):
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         serializer = CreateDeliveryRequest(data=request.data)
         if serializer.is_valid():
@@ -19,6 +22,7 @@ class DeliveryView(APIView):
 
 
 class OrderDelivered(generics.UpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -29,6 +33,7 @@ class OrderDelivered(generics.UpdateAPIView):
 
 
 class OrderCancel(generics.UpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -39,6 +44,7 @@ class OrderCancel(generics.UpdateAPIView):
 
 
 class OrderSearchView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
