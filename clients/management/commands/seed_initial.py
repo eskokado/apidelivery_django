@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
             cli1 = Client(name="Maria Silva", email="maria@gmail.com")
             cli2 = Client(name="Paulo Silva", email="paulo@gmail.com")
-            sup = Supplier(number="João Souza", complement="joao@gmail.com")
+            sup = Supplier(name="João Souza", email="joao@gmail.com")
 
             cli1.save()
             cli2.save()
