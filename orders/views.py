@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
@@ -35,3 +36,19 @@ class OrderCancel(generics.UpdateAPIView):
         instance = self.get_object()
         instance.state_delivery = StateDelivery.CANCELED.code
         serializer.save(state_delivery=instance.state_delivery)
+
+
+class OrderSearchView(generics.GenericAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def get(self, request):
+        terms = request.query_params.get('terms', '')
+
+        orders = Order.objects.filter(
+            Q(address_of_delivery__client__name__icontains=terms) |
+            Q(supplier__name__icontains=terms)
+        )
+
+        serializer = self.get_serializer(orders, many=True)
+        return Response(serializer.data)
