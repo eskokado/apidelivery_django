@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 from django.db import transaction
 
@@ -49,3 +50,17 @@ class Command(BaseCommand):
             oi1.save()
             oi2.save()
             oi3.save()
+
+            admin_user = User.objects.create_superuser(
+                username='admin',
+                email='admin@example.com',
+                password='admin'
+            )
+            admin_user.save()
+
+            regular_user = User.objects.create_user(
+                username='user',
+                email='user@example.com',
+                password='user'
+            )
+            regular_user.save()
