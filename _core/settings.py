@@ -43,6 +43,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "rest_framework",
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MY_APPS = [
@@ -142,6 +143,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -153,4 +155,13 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(weeks=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Delivery Django',
+    'DESCRIPTION': "Essa API permite a criação, atualização e busca de entregas, além de oferecer a possibilidade de procurar por entregas por destinatário ou por remetente.\n"
+                  " A API também permite o cancelamento de entregas e o consumo de uma API REST para buscar detalhes de endereços com base no CEP e no número do endereço.\n"
+                  " A API é protegida com autenticação JWT Token e está documentada em Swagger para facilitar o uso e a integração com outras aplicações.",
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
