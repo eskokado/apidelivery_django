@@ -2,9 +2,8 @@ from django.db import models
 
 
 class Supplier(models.Model):
-    number = models.CharField(max_length=50, null=False)
-    complement = models.CharField(max_length=100, blank=True, null=True)
-    zip_code = models.CharField(max_length=8, null=False)
+    name = models.CharField(max_length=150, null=False)
+    email = models.EmailField(max_length=150, null=False, unique=True)
 
     class Meta:
         db_table = 'suppliers'
